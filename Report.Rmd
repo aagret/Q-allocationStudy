@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+classoption: landscape
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+                      
+                      
+
+#### initiate requested libraries ####
+library(data.table)
+library(quantmod)
+library(PerformanceAnalytics)
+library(ggplot2)
+
+
+#### set working directory ####
+codeDir <- "//ARTHASERVER/Data/Alexandre/R-Projects/Allocator"
+
+workDir <- "//ARTHASERVER/Data/Alexandre/R-Projects/Allocator"
+setwd(workDir)
+
+### load Functions
+source(paste0(codeDir, "/R/Source/plotHisto.R"))
+source(paste0(codeDir, "/R/Source/plotFrontier.R"))
+source(paste0(codeDir, "/R/Source/multiplot.R"))
+
+```
+
+
+## R Markdown
+
+
+
+```{r, echo=FALSE}
+##### code
+
+studies <- readRDS("studies.rds")
+
+#for (i in lenght(studies)) {
+    i <-1     
+    db    <- studies[[i]]
+    title <- paste0("Period: ", 
+                    first(index(db$indexes$returns)),
+                    "/",
+                    last(index(db$indexes$returns)))
+    
+    
+    indices <- c("DEQ", "Q_hdg", "BE500T", "Bench")
+        
+    g1 <- plotHisto(db$indexes$returns[,indices])
+    g2 <- plotFrontier(db$port1$data, "Sortino")
+    g3 <- plotFrontier(db$port2$data, "Sortino")
+    g4 <- plotFrontier(db$port1$data, "Sharpe")
+    g5 <- plotFrontier(db$port2$data, "Sharpe")
+    
+    multiplot(g2,g4,g3,g5, cols=2)
+
+#}  
+```
