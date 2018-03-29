@@ -12,6 +12,7 @@ library(data.table)
 library(quantmod)
 library(PerformanceAnalytics)
 library(ggplot2)
+library(rmarkdown)
 
 
 
