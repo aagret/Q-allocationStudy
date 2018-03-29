@@ -124,51 +124,8 @@ plotFrontier <- function(db= database, typ= "Sortino") {
                   colour="red") +
         
         geom_abline(intercept=rf, slope=
-                        (best$`Annualized Return` - rf )/ best$`Annualised downside risk`,
+                        (best$`Annualized Return` - rf )/ best[, gsub("`", "", dat)],
                     size=1, color="red", linetype= "dotted")
     
-    
-    
-    # 
-    # geom_point(data= stats0$stats["DEQex",],
-    #        aes_string(x=dat, y="`Annualized Return`"), 
-    #        size=5, colour="blue") +
-    # 
-    # geom_label(data= stats0$stats["DEQex",], 
-    #            aes_string(x=dat, y="`Annualized Return`"),
-    #            label=paste("DEQex", typ, ": ", 
-    #                        stats0$stats["DEQex",][grepl(type, colnames(db[last,]))]), 
-    #            hjust=1.2) +
-    # 
-    # geom_point(data= stats0$stats["Bench",],
-    #            aes_string(x=dat, y="`Annualized Return`"), 
-    #            size=5, colour="green") +
-    # 
-    # geom_label(data= stats0$stats["Bench",], 
-    #            aes_string(x=dat, y="`Annualized Return`"),
-    #            label=paste("Bench", typ, ": ", 
-    #                        stats0$stats["Bench",grepl(type, colnames(db[last,]))]),
-    #            hjust=1.2) +
-    # 
-    # geom_point(data= stats0$stats["BE500T",],
-    #            aes_string(x=dat, y="`Annualized Return`"), 
-    #            size=5, colour="purple") +
-    # 
-    # geom_label(data= stats0$stats["BE500T",], 
-    #            aes_string(x=dat, y="`Annualized Return`"),
-    #            label=paste("BE500T", typ, ": ", 
-    #                        stats0$stats["BE500T",grepl(type, colnames(db[last,]))]),
-    #            hjust=1.2) +
-    # 
-    # geom_point(data= stats0$stats["QasCash",],
-    #            aes_string(x=dat, y="`Annualized Return`"),
-    #            size=5, colour="yellow") +
-    # 
-    # geom_label(data= stats0$stats["QasCash",],
-    #            aes_string(x=dat, y="`Annualized Return`"),
-    #            label=paste0("QasCash", " - ", typ, ": ",
-    #                         stats0$stats["QasCash", grepl(type, colnames(stats0$stats))]),
-    #            hjust=1.2)
-    # 
     
 }

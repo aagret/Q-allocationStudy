@@ -1,0 +1,197 @@
+---
+title: "DharmaResearch Equities"
+author: "Artha Finance SA"
+geometry: "left=0cm,right=0cm,top=0cm,bottom=1cm"
+output:
+  
+  
+  word_document:
+      
+      reference_docx: margin_styles.docx
+  html_document:
+    df_print: paged
+  pdf_document: default
+classoption: portrait
+---
+
+
+
+
+##Etude de l’apport pour DEQ d’un investissement dans Q-Capital
+
+
+
+
+###Recherche d’amélioration des ratios Sharpe et Sortino
+
+
+
+
+#####Etudes scindée par périodes
+
+Pour chaque période les éléments suivants sont étudiés:
+
+1. les graphiques de performances historiques des:
+    + principaux indices
+    + trois stratégies (DEQ, DEQ + 5% Q_hdg, DEQ + 10 %Q_hdq)
+    + la corrélation glissante sur 30 jours entre DEQ et Q_hdg
+2. un tableau de récapitulation des indicateurs principaux pour chaque indice et pour les "Best in class"
+3. une matrice de corrélation des principaux indices
+4. les frontières efficientes du Sharpe et du Sortino, composées de DEQ et Q_hdg et de SPXT et Q
+
+
+
+
+#####Remarques
+La contrainte Ucit actuelle est de 10% de fonds tiers au maximum dans DEQ
+La stratégie QasCash n'est de ce fait pas réalisable dans certaines périodes
+
+Le coût du hedge en Euro ainsi que le pro-forma de Q sont des estimations théoriques
+
+Le pro-forma février 2018 et la NAV de la tranche Euro de Q seront ajoutés à cette étude prochainement
+
+La stratégie DEQex est ex-Cash ex Fees. Nous ne pouvons malheureusement pas distinguer les deux dans la NAV de Dharma Cell D
+Une stratégie réellement ex-Cash ne peut se faire que depuis le lancement du fonds Tfc DharmaResearch
+
+
+
+
+
+
+
+
+#####Conclusion préliminaire
+La performance du proforma de Q depuis 1997 est exceptionnelle, mais sur pa période observée (dès le 28 février 2013), Q est très en retrait et affiche un sharpe de 0.29 alors que DEQ est a 0.68 et le SPXT_hdg à 1.09
+
+La correlation de Q_hdg et DEQ reste toutefois en moyenne basse et apriori intéressante dans les phases de baisse de marché.
+
+
+
+
+***
+######Périodes:
+    du 2013-02-28 au 2015-05-14 	Positive pour DEQ
+    du 2016-01-29 au 2016-11-11		Positive pour DEQ
+    du 2014-05-15 au 2016-01-29		Négative pour DEQ
+	du 2016-11-11 au 2017-08-17		Négative pour DEQ
+    du 2017-08-31 au 2018-01-31		depuis dernière période
+	du 2016-12-30 au 2018-01-31		un an et+
+	du 2013-02-28 au 2018-01-31		lancement Dharma Cell D
+	du 2015-06-17 au 2018-01-31		lancement TFC DEQ
+
+######Abbr:
+    DEQ	      Dharma Equity Strategy (NAV of Dharma Cell C + TFC DharmaResearch)
+    Q	      Q-Capital pro-forma jusqu’au 31 janvier 2018
+    Q_hdg	  Q-Capital après hedge synthétique en Euro
+    BE500T	  Bloomberg Europe 500 Total Return Index (Gross)
+    SPXT	  S&P 500 Total Return Index (Gross)
+    SPXT_hdg  SPXT après hedge synthétique en Euro
+    Bench	  50% SPXT + 50% BE500T débalancé journalière ment
+    DEQex	  DEQ ex cash, stratégie pure 100% actions
+    QasCash	  Stratégie composée de DEQex + le cash de DEQ réinvesti en Q
+***
+
+
+    
+
+
+
+    
+
+```{r setup, include=FALSE}
+ knitr::opts_chunk$set(echo = TRUE)
+ 
+ #### initiate requested libraries ####
+library(data.table)
+library(quantmod)
+library(PerformanceAnalytics)
+library(ggplot2)
+library(cowplot)
+library(rmarkdown)
+library(grid)
+library(gridExtra)
+library(knitr)
+
+#### set working directory ####
+codeDir <- "M:/Alexandre/R-Projects/Allocator"
+
+workDir <- "M:/Alexandre/R-Projects/Allocator"
+setwd(workDir)
+
+### load Functions
+source(paste0(codeDir, "/R/Source/plotHisto.R"))
+source(paste0(codeDir, "/R/Source/plotFrontier.R"))
+
+
+```
+
+
+```{r , echo=FALSE, fig.height=24, fig.width=17, warning=FALSE}
+##### code
+
+studies <- readRDS(paste0(codeDir, "/studies.rds"))
+
+for (i in 1:length(studies)) {
+
+
+    db    <- studies[[i]]
+
+    title <- paste0("Period: ",
+                    first(index(db$indexes$returns)),
+                    "/",
+                    last(index(db$indexes$returns)))
+
+
+    indices <- c("DEQ", "DEQex", "Q_hdg", "QasCash",
+                 "SPXT_hdg", "BE500T", "Bench")
+
+
+    # plot histo prices
+    g1 <- plotHisto(db$indexes$returns[,indices])
+    g2 <- plotHisto(db$port1$returns[ , colnames(db$port1$returns) %in%
+                                          c("DEQ", "Q_hdg", "Q_hdg5", "Q_hdg10")])
+
+    # plot efficient frontiers
+    f1 <- plotFrontier(db$port1$data, "Sortino")
+    f2 <- plotFrontier(db$port2$data, "Sortino")
+    f3 <- plotFrontier(db$port1$data, "Sharpe")
+    f4 <- plotFrontier(db$port2$data, "Sharpe")
+
+    # plot rollCorrelation
+    g6 <- ggplot(melt(as.data.table(db$indexes$rollCor), "index")) +
+        ggtitle("30 days rolling Correlation DEQ/Q") +
+        theme(legend.position=c(0, 0.8)) +
+        geom_line(aes(x=index, y=value), color="green") +
+        ylim(-1,1)
+
+    rownames(db$indexes$stats) <-
+        mapply(paste0,
+               c("Best Return=", "Best Sharpe=", "Best Sortino=", "lowest Sharpe Vol="),
+               rownames(db$indexes$stats),
+               SIMPLIFY = FALSE)
+
+    t1  <-
+        tableGrob(
+            round(
+                rbind(db$indexes$data[indices,c(1,2,3,18,21)],
+                      db$indexes$stats[ ,c(1,2,3,18,21)])
+                , 4))
+
+    t2  <- tableGrob(db$indexes$cor[indices,indices])
+
+    blank <- grid.rect(gp=gpar(col="white"))
+
+    t <- arrangeGrob(t1, t2, heights=c(5, 50))
+
+
+    grid.arrange(arrangeGrob(g1, g2, t))#, g6, t, heights=c(20/100, 20/100, 10/100, 40/100 )))
+
+    grid.arrange(arrangeGrob(f3, f1, f2, f2, ncol=2, nrow=2))
+
+}
+ 
+```
+
+
+
+
