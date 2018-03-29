@@ -15,7 +15,7 @@ getStats <- function(db= database, per= period) {
 
     ndays <- last(index(db$indexes$returns)) - first(index(db$indexes$returns))
     
-    riskFree <- mean(db$indexes$returns$EUR) / ifelse(ndays <= 365, ndays, 36500)
+    riskFree <- mean(db$indexes$returns$EUR) / ifelse(ndays <= 365, ndays * 100, 36500)
     
     db$indexes$returns$EUR <- db$indexes$returns$USD <- NULL
     
