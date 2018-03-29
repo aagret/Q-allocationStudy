@@ -115,13 +115,9 @@ knitr::opts_chunk$set(echo = TRUE)
 #### initiate requested libraries ####
 library(data.table)
 library(quantmod)
-library(PerformanceAnalytics)
 library(ggplot2)
-library(cowplot)
-library(rmarkdown)
-library(grid)
 library(gridExtra)
-library(knitr)
+
 
 #### set working directory ####
 codeDir <- "M:/Alexandre/R-Projects/Allocator"
@@ -138,20 +134,17 @@ source(paste0(codeDir, "/R/Source/plotFrontier.R"))
 
 
 ```{r , echo=FALSE, fig.height=21, fig.width=16, warning=FALSE}
+
 ##### code
 
 studies <- readRDS(paste0(codeDir, "/TidyData/studies.rds"))
 
 for (i in 1:length(studies)) {
 
+    # select study period
     db    <- studies[[i]]
 
-    title <- paste0("Period: ",
-                    first(index(db$indexes$returns)),
-                    "/",
-                    last(index(db$indexes$returns)))
-
-
+    # define indexes to use
     indices1 <- c("DEQ", "DEQex", "Q_hdg", "QasCash", "Bench", "BE500T")
     
     indices2 <- c("DEQ", "Q_hdg", "Q_hdg5", "Q_hdg10")
@@ -173,24 +166,29 @@ for (i in 1:length(studies)) {
         theme(legend.position=c(0, 0.8)) +
         geom_line(aes(x=index, y=value), color="green") +
         ylim(-1,1)
-
+    
+    # change rownames
     rownames(db$indexes$stats) <-
         mapply(paste0,
                c("Best Return=", "Best Sharpe=", "Best Sortino=", "lowest Sharpe Vol="),
                rownames(db$indexes$stats),
                SIMPLIFY = FALSE)
 
+    # merge format stats&best in class keep only Sortino and Sharpe datas
     t1  <-
         tableGrob(
             round(
                 rbind(db$indexes$data[indices1,c(1,2,3,18,21)],
                       db$indexes$stats[ ,c(1,2,3,18,21)])
                 , 4))
-
+    
+    # merge and format correlation matrix
     t2  <- tableGrob(db$indexes$cor[indices1,indices1])
 
+    # print history graphs and tables
     grid.arrange(arrangeGrob(g1, g2, g6, t1, t2, heights=c(40/100, 40/100, 20/100, 20/100, 20/100 )))
-
+    
+    # print efficient frontiers
     grid.arrange(arrangeGrob(f3, f1, f2, f2, ncol=2, nrow=2))
 
 
