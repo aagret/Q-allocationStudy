@@ -40,7 +40,7 @@ data$indexes$returns$DEQ_Inv <- data$indexes$returns$Hdg_Cst <- NULL
 ##################################
 
 data$port1$returns   <- generatePortfolios(data$indexes$returns$DEQ,  data$indexes$returns$Q_hdg)
-data$port2$returns   <- generatePortfolios(data$indexes$returns$SPXT, data$indexes$returns$Q)
+data$port2$returns   <- generatePortfolios(data$indexes$returns$SPXT_hdg, data$indexes$returns$Q_hdg)
 
 
 
