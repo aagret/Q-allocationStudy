@@ -65,7 +65,7 @@ period  <- c("2013-02-28/2018-01-31",
 studies <- lapply(period, function(x) getStats(data, x))
 
 
-saveRDS(studies, "/TidyData/studies.rds")
+saveRDS(studies, "TidyData/studies.rds")
 
 ######################
 
