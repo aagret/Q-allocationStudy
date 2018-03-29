@@ -9,7 +9,9 @@
 data <- list()
 
 # merge .csv datas
-data$indexes$returns <- cbind(getData("returns.csv"), getData("navQ.csv"), getData("rates.csv"))
+data$indexes$returns <- cbind(getData("RawData/returns.csv"),
+                              getData("RawData/navQ.csv"), 
+                              getData("RawData/rates.csv"))
 
 # compute hedging cost for usd assets             
 data$indexes$returns$Hdg_Cst <- lag(data$indexes$returns$EUR - data$indexes$returns$USD - 0.375) *
@@ -48,23 +50,22 @@ data$port2$returns   <- generatePortfolios(data$indexes$returns$SPXT, data$index
 
 # define study period
 period  <- c("2013-02-28/2018-01-31",
+             "2015-06-17/2018-01-31",
              "2016-12-30/2018-01-31",
              
              "2013-02-28/2015-05-14", 
              "2014-05-15/2016-01-29",
              "2016-01-29/2016-11-11",
              "2016-11-11/2017-08-17",
-             
-             "2017-08-31/2018-01-31",
-             "2013-02-28/2018-01-31",
-             "2015-06-17/2018-01-31")
+             "2017-08-17/2018-01-31"
+             )
 
 
 
 studies <- lapply(period, function(x) getStats(data, x))
 
 
-saveRDS(studies, "studies.rds")
+saveRDS(studies, "/TidyData/studies.rds")
 
 ######################
 

@@ -140,7 +140,7 @@ source(paste0(codeDir, "/R/Source/plotFrontier.R"))
 ```{r , echo=FALSE, fig.height=21, fig.width=16, warning=FALSE}
 ##### code
 
-studies <- readRDS(paste0(codeDir, "/studies.rds"))
+studies <- readRDS(paste0(codeDir, "/TidyData/studies.rds"))
 
 for (i in 1:length(studies)) {
 

@@ -12,7 +12,7 @@ library(data.table)
 library(quantmod)
 library(PerformanceAnalytics)
 library(ggplot2)
-library(TTR)
+
 
 
 #### set working directory ####
@@ -30,7 +30,7 @@ source(paste0(codeDir, "/R/allocator.R"))
 
 ## generate Doc
 
-render(paste0(codeDir,"/Report2.Rmd"))
+render(paste0(codeDir,"/R/Rmd/Report3.Rmd"))
 
 #################
 ###### END ######
