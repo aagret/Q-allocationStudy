@@ -13,6 +13,7 @@ library(quantmod)
 library(PerformanceAnalytics)
 library(ggplot2)
 library(rmarkdown)
+library(readxl)
 
 
 
