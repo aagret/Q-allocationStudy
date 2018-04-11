@@ -3,16 +3,13 @@ title: "DharmaResearch Equities"
 author: "Artha Finance SA"
 geometry: "left=0cm,right=0cm,top=0cm,bottom=1cm"
 output:
-  
+
   word_document:
       reference_docx: margin_styles.docx
-      
   pdf_document: default
-  
   html_document:
     df_print: paged
-
-classoption: portrait
+classoption: portrait, a4paper
 ---
 
 <BR>
@@ -63,7 +60,7 @@ et non des perfromances réalisées.
 Le pro-forma février 2018 et la NAV de la tranche Euro de Q seront ajoutés à cette étude 
 prochainement.
 
-La stratégie DEQex doit se comprendre ex-Cash ET ex Fees. Nous ne pouvons malheureusement 
+La stratégie DEQexa doit se comprendre ex-Cash ET ex Fees. Nous ne pouvons malheureusement 
 pas distinguer les deux dans la NAV de Dharma Cell D. Une stratégie réellement ex-Cash ne 
 peut etre étudiée que depuis le lancement du fonds Tfc DharmaResearch.
 
@@ -81,8 +78,8 @@ la performance. Il en résulte une dégradation des ratios Sharpe et, dans une m
 de Sortino lors de quasiment toutes les périodes d'observation.  
 
 La recherche d'un actif décorellé mais offrant une rentabilité non nulle en remplacement du cash 
-est étudiée avec la stratégie QasCash, Q_hdg remplacant l'exposition journalière du cash dans DEQ, 
-sans frais de transaction.
+est étudiée avec la stratégie QasCash, Q_hdg remplacant l'exposition journalière du cash dans DEQ
+(max 10%), sans frais de transaction.
 
 La performance du proforma de Q depuis 1997 est exceptionnelle, mais sur la période observée (dès 
 le 28 février 2013),  la stratégie est très en retrait et affiche un sharpe de 0.29 alors que DEQ
@@ -118,7 +115,7 @@ et régulièrement négative. Cela aurait permis d'améliorer les ratios et la p
     SPXT	  S&P 500  Total Return Index (Gross)
     SPXT_hdg  SPXT après hedge en Euro (meme methode que Q_hdg)
     Bench	  50% SPXT + 50% BE500T débalancé journalière ment
-    DEQex	  DEQ ex cash, stratégie pure 100% actions
+    DEQexa	  DEQ ex cash, taxes & Fees, stratégie pure 100% actions
     QasCash	  Stratégie composée de DEQex + le cash de DEQ réinvesti en Q
 ***  
   
@@ -150,7 +147,7 @@ source(paste0(codeDir, "/R/Source/plotFrontier.R"))
 ```
 
 
-```{r , echo=FALSE, fig.height=21, fig.width=16, warning=FALSE}
+```{r , echo=FALSE, fig.height=23, fig.width=16, warning=FALSE}
 
 ##### code
 
@@ -162,7 +159,7 @@ for (i in 1:length(studies)) {
     db    <- studies[[i]]
 
     # define indexes to use
-    indices1 <- c("DEQ", "DEQex", "Q_hdg", "QasCash", "Bench", "BE500T")
+    indices1 <- c("DEQ", "Q5", "Q10", "QasCash", "Bench", "BE500T")
     
     indices2 <- c("DEQ", "Q_hdg", "Q_hdg5", "Q_hdg10")
 
