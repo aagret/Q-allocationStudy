@@ -3,7 +3,6 @@ title: "DharmaResearch Equities"
 author: "Artha Finance SA"
 geometry: "left=0cm,right=0cm,top=0cm,bottom=1cm"
 output:
-
   word_document:
       reference_docx: margin_styles.docx
   pdf_document: default
@@ -102,10 +101,10 @@ et régulièrement négative. Cela aurait permis d'améliorer les ratios et la p
     du 2016-01-29 au 2016-11-11		Positive pour DEQ
     du 2014-05-15 au 2016-01-29		Négative pour DEQ
 	du 2016-11-11 au 2017-08-17		Négative pour DEQ
-    du 2017-08-31 au 2018-01-31		depuis dernière période
-	du 2016-12-30 au 2018-01-31		un an et+
-	du 2013-02-28 au 2018-01-31		lancement Dharma Cell D
-	du 2015-06-17 au 2018-01-31		lancement TFC DEQ
+    du 2017-08-31 au 2018-04-20		depuis dernière période
+	du 2016-12-30 au 2018-04-20		un an et+
+	du 2013-02-28 au 2018-04-20		lancement Dharma Cell D
+	du 2015-06-17 au 2018-04-20		lancement TFC DEQ
 	
 ####Abbr:	
     DEQ	      Dharma Equity Strategy (NAV of Dharma Cell C + TFC DharmaResearch)
